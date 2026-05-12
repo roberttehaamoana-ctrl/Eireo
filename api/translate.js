@@ -1,11 +1,12 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const { readFileSync } = require('fs');
-const { join } = require('path');
+import { readFile } from 'fs/promises';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let knowledge = null;
 try {
-  const raw = readFileSync(join(process.cwd(), 'api', 'knowledge.json'), 'utf-8');
+  const raw = await readFile(join(__dirname, 'knowledge.json'), 'utf-8');
   knowledge = JSON.parse(raw);
 } catch(e) {
   console.error('Erreur knowledge.json:', e.message);
